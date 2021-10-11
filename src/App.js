@@ -1,3 +1,4 @@
+/*eslint-disable */
 import "./App.css";
 import { useState } from "react";
 import {
@@ -11,11 +12,13 @@ import {
 } from "react-bootstrap";
 import Data from "./data";
 import Detail from "./Detail";
+import axios from "axios";
 
 import { Link, Route, Switch } from "react-router-dom";
 
 function App() {
   let [shoes, setShose] = useState(Data);
+  let [storage, setStorage] = useState([10, 11, 12]);
 
   return (
     <div className="App">
@@ -24,8 +27,8 @@ function App() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link><Link to="/">Home</Link></Nav.Link>
-            <Nav.Link><Link to="/detail">Detail</Link></Nav.Link>
+            <Nav.Link as={Link} to="/">Home</Nav.Link>
+            <Nav.Link as={Link} to="/detail">Detail</Nav.Link>
             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
@@ -64,11 +67,24 @@ function App() {
                 return <Card shoes={shoes[i]} i={i} key={i} />;
               })}
             </div>
+            <button className="btn btn-primary" onClick={() => {
+
+
+
+              axios.get('https://codingapple1.github.io/shop/data2.json')
+              .then( (result) => {
+                console.log(result.data);
+                setShose([...shoes, ...result.data]);
+              })
+              .catch( () => {
+                console.log("Fail!");
+              })
+            }}>더보기</button>
           </div>
         </Route>
 
-        <Route path="/detail">
-            <Detail></Detail>
+        <Route path="/detail/:id">
+            <Detail shoes={shoes} storage={storage} setStorage={setStorage}></Detail>
         </Route>
 
         <Route path="/:id">
@@ -88,7 +104,7 @@ function Card(props) {
       ></img>
       <h4>{props.shoes.title}</h4>
       <p>
-        {props.shoes.content} & {props.shoes.price}
+        {props.shoes.content} & {props.shoes.price}원
       </p>
     </div>
   );

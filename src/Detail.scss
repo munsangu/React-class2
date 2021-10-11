@@ -1,0 +1,38 @@
+$titleColor: #ff0000;
+
+.title {
+  color: $titleColor;
+}
+
+div.container {
+  h4 {
+    color: #0000ff;
+  }
+  p {
+    color: #00ff00;
+  }
+}
+
+@mixin function() {
+  background-color: #eee;
+  padding: 20px;
+  border-radius: 5px;
+  max-width: 500px;
+  width: 100%;
+  margin: auto;
+}
+
+.my-alert {
+  @include function()
+}
+
+.my-alert2 {
+  @extend .my-alert;
+  background: #ffe591;
+}
+
+
+
+.my-alert p {
+  margin-bottom: 0;
+}
